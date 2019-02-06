@@ -1,7 +1,7 @@
 # Breakfast
 > Serial communication library for UNIX and Windows.\
 > Public domain, single-header.\
-> by Benedict Henshaw, 2019\
+> by Benedict Henshaw, 2019
 
 Just pop the file `breakfast.h` into your source folder, and `#include` it where you need it.
 
