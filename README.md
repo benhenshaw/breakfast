@@ -1,6 +1,8 @@
 # Breakfast
-Serial communication for UNIX and Windows.\
+Serial communication library for UNIX and Windows.\
 by Benedict Henshaw, 2019
+
+Just pop the file `breakfast.h` into your source folder, and `#include` it where you need it.
 
 This library works great for communicating with an [Arduino](https://www.arduino.cc/) via USB cable. You just need to find the name of the port it is connected to, which you can find under `Tools > Port` within the Arduino Editor.
 
@@ -35,7 +37,6 @@ Some of these values might not be supported by the hardware. There are also valu
 
 | UNIX  | Windows |
 |-------|---------|
-| 0     | .       |
 | 50    | .       |
 | 75    | .       |
 | 110   | 110     |
