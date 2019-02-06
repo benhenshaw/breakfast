@@ -4,7 +4,7 @@
 //
 
 #include <stdio.h>
-#include "breakfast.c"
+#include "breakfast.h"
 
 int main(int argument_count, char ** arguments)
 {

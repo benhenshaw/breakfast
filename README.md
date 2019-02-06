@@ -1,6 +1,8 @@
 # Breakfast
-Serial communication for UNIX and Windows.
+Serial communication for UNIX and Windows.\
 by Benedict Henshaw, 2019
+
+This library works great for communicating with an [Arduino](https://www.arduino.cc/) via USB cable. You just need to find the name of the port it is connected to, which you can find under `Tools > Port` within the Arduino Editor.
 
 ## API
 ```C
