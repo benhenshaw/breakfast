@@ -1,6 +1,7 @@
 # Breakfast
-Serial communication library for UNIX and Windows.\
-by Benedict Henshaw, 2019
+> Serial communication library for UNIX and Windows.\
+> Public domain, single-header.\
+> by Benedict Henshaw, 2019\
 
 Just pop the file `breakfast.h` into your source folder, and `#include` it where you need it.
 
@@ -58,5 +59,5 @@ Some of these values might not be supported by the hardware. There are also valu
 | .     | 128000  |
 | .     | 256000  |
 
-See [Windows Supported Baud Rates](https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_dcb#members)\
+See [Windows Supported Baud Rates](https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_dcb#members).\
 See [UNIX/POSIX Supported Baud Rates](https://linux.die.net/man/3/termios) (near bottom of page).
