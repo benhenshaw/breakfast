@@ -48,7 +48,7 @@ bf_handle bf_open(char * serial_port_name, int baud)
     bf_handle handle = CreateFile(serial_port_name,
         GENERIC_READ | GENERIC_WRITE,
         0, NULL, OPEN_EXISTING, 0, NULL);
-    if (bf_handle == INVALID_HANDLE_VALUE) return -1;
+    if (handle == INVALID_HANDLE_VALUE) return BF_BAD_HANDLE;
 
     DCB parameters = {0};
     parameters.DCBlength = sizeof(parameters);
@@ -64,11 +64,11 @@ bf_handle bf_open(char * serial_port_name, int baud)
     parameters.StopBits = ONESTOPBIT;
     parameters.Parity   = NOPARITY;
 
-    BOOL success = GetCommState(handle, &parameters);
+    success = GetCommState(handle, &parameters);
     if (!success)
     {
         bf_close(handle);
-        return BF_BAD_HANDLE};
+        return BF_BAD_HANDLE;
     }
 
     return handle;
@@ -98,7 +98,7 @@ bf_handle bf_open(char * serial_port_name, int baud)
 int bf_read(bf_handle handle, void * buffer, int byte_count)
 {
 #ifdef _WIN32
-    int bytes_read = 0;
+    DWORD bytes_read = 0;
     BOOL success = ReadFile(handle, buffer, byte_count, &bytes_read, NULL);
     if (!success) return -1;
     return bytes_read;
@@ -110,7 +110,7 @@ int bf_read(bf_handle handle, void * buffer, int byte_count)
 int bf_write(bf_handle handle, void * data, int byte_count)
 {
 #ifdef _WIN32
-    int bytes_written = 0;
+    DWORD bytes_written = 0;
     BOOL success = WriteFile(handle, data, byte_count, &bytes_written, NULL);
     if (!success) return -1;
     return bytes_written;
