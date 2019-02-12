@@ -32,15 +32,17 @@
 // Returns BF_BAD_HANDLE on failure.
 bf_handle bf_open(char * serial_port_name, int baud);
 
-// returns -1 on failure.
+// Returns number of bytes read, returns -1 on failure.
 int bf_read(bf_handle handle, void * buffer, int byte_count);
 
-// returns -1 on failure.
+// Returns number of bytes written, returns -1 on failure.
 int bf_write(bf_handle handle, void * data, int byte_count);
 
 void bf_close(bf_handle handle);
 
-
+//
+// Implementation.
+//
 
 bf_handle bf_open(char * serial_port_name, int baud)
 {

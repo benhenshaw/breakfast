@@ -5,7 +5,7 @@
 
 Just pop the file `breakfast.h` into your source folder, and `#include` it where you need it.
 
-This library works great for communicating with an [Arduino](https://www.arduino.cc/) via USB cable. You just need to find the name of the port it is connected to, which you can find under `Tools > Port` within the Arduino Editor.
+This library works great for communicating with an [Arduino](https://www.arduino.cc/) via USB cable. You just need the name of the **port** it is connected to, which you can find under `Tools > Port` within the Arduino Editor.
 
 ## API
 ```C

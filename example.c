@@ -16,8 +16,7 @@ int main(int argument_count, char ** arguments)
         exit(1);
     }
 
-    // Open a handle to the serial device,
-    // using a baud rate of 9600.
+    // Open a handle to the serial device using a baud rate of 9600.
     bf_handle handle = bf_open(arguments[1], 9600);
     if (handle == BF_BAD_HANDLE)
     {
@@ -32,12 +31,12 @@ int main(int argument_count, char ** arguments)
     //
 
     // Write some data to the serial device.
-    //Here we send the string hello.
+    // Here we send the string "Hello".
     bf_write(handle, "Hello", sizeof("Hello"));
 
     fprintf(stderr, "Wrote 'Hello'\n");
 
-    // Send a n array of bytes.
+    // Send an array of bytes.
     unsigned char data[64];
     for (int i = 0; i < 64; ++i)
     {
@@ -58,9 +57,9 @@ int main(int argument_count, char ** arguments)
     // Reading data.
     //
 
-    // Create a empty buffer.
     // This will be filled with data when we read from the serial device.
     char buffer[512];
+    // Set all bytes to zero to avoid junk.
     memset(buffer, 0, 512);
 
     fprintf(stderr, "Reading data...\n");
@@ -73,16 +72,12 @@ int main(int argument_count, char ** arguments)
         exit(1);
     }
 
-    // bf_read will return -1 if the read failed.
-    // Otherwise, this value will hold the number of bytes read.
-
     fprintf(stderr, "Read %d bytes:\n", bytes_read);
 
     if (bytes_read > 0)
     {
-        // We successfully read some data, so print it out.
-        // Make sure that the data ends in a zero,
-        // as this is what puts() expects.
+        // We successfully read some data, so let's print it out.
+        // Make sure that the data ends in a zero as this is what puts expects.
         buffer[511] = '\0';
         puts(buffer);
     }
