@@ -12,7 +12,7 @@ int main(int argument_count, char ** arguments)
 
     if (argument_count <= 1)
     {
-        fputs("You need to specify which serial port to open!", stderr);
+        fputs("You need to specify which serial port to open!\n", stderr);
         exit(1);
     }
 
@@ -78,7 +78,7 @@ int main(int argument_count, char ** arguments)
     {
         // We successfully read some data, so let's print it out.
         // Make sure that the data ends in a zero as this is what puts expects.
-        buffer[511] = '\0';
+        buffer[bytes_read] = '\0';
         puts(buffer);
     }
 

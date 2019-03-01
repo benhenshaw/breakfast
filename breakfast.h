@@ -51,50 +51,62 @@ bf_handle bf_open(char * serial_port_name, int baud)
 #ifdef _WIN32
     bf_handle handle = CreateFile(serial_port_name,
         GENERIC_READ | GENERIC_WRITE,
-        0, NULL, OPEN_EXISTING, 0, NULL);
+        0, NULL, OPEN_EXISTING,
+        FILE_FLAG_WRITE_THROUGH | FILE_FLAG_NO_BUFFERING,
+        NULL);
     if (handle == INVALID_HANDLE_VALUE) return BF_BAD_HANDLE;
-
-    DCB parameters = {0};
-    parameters.DCBlength = sizeof(parameters);
-
-    BOOL success = GetCommState(handle, &parameters);
+    Sleep(500);
+    DCB settings = {0};
+    settings.DCBlength = sizeof(settings);
+    BOOL success = GetCommState(handle, &settings);
     if (!success)
     {
         bf_close(handle);
         return BF_BAD_HANDLE;
     }
-    parameters.BaudRate = baud;
-    parameters.ByteSize = 8;
-    parameters.StopBits = ONESTOPBIT;
-    parameters.Parity   = NOPARITY;
-
-    success = GetCommState(handle, &parameters);
+    settings.BaudRate      = baud;
+    settings.ByteSize      = 8;
+    settings.fAbortOnError = 0;
+    settings.fBinary       = 1;
+    settings.fDtrControl   = DTR_CONTROL_ENABLE;
+    settings.fNull         = 0;
+    settings.Parity        = NOPARITY;
+    settings.StopBits      = ONESTOPBIT;
+    success = SetCommState(handle, &settings);
     if (!success)
     {
         bf_close(handle);
         return BF_BAD_HANDLE;
     }
-
+    PurgeComm(handle, PURGE_RXCLEAR | PURGE_TXCLEAR);
     return handle;
 #else
-    bf_handle handle = open(serial_port_name, O_RDWR);
+    bf_handle handle = open(serial_port_name, O_RDWR | O_NOCTTY);
     if (handle == -1) return BF_BAD_HANDLE;
-
+    usleep(500000);
     struct termios settings;
-    tcgetattr(handle, &settings);
-
+    int result = tcgetattr(handle, &settings);
+    if (result == -1)
+    {
+        bf_close(handle);
+        return BF_BAD_HANDLE;
+    }
     cfsetispeed(&settings, baud);
     cfsetospeed(&settings, baud);
-    settings.c_cflag &= ~PARENB;
-    settings.c_cflag &= ~CSTOPB;
-    settings.c_cflag &= ~CSIZE;
-    settings.c_cflag |= CS8 | CLOCAL;
-    settings.c_lflag = ICANON;
-    settings.c_oflag &= ~OPOST;
-
-    tcsetattr(handle, TCSANOW, &settings);
-    tcflush(handle, TCOFLUSH);
-
+    settings.c_cflag     &= ~PARENB;
+    settings.c_cflag     &= ~CSTOPB;
+    settings.c_cflag     &= ~CSIZE;
+    settings.c_cflag     |= CS8;
+    settings.c_lflag     |= ~ICANON;
+    settings.c_cc[VMIN]   = 0;
+    settings.c_cc[VTIME]  = 0;
+    result = tcsetattr(handle, TCSANOW, &settings);
+    if (result == -1)
+    {
+        bf_close(handle);
+        return BF_BAD_HANDLE;
+    }
+    tcflush(handle, TCIOFLUSH);
     return handle;
 #endif
 }
