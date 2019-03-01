@@ -46,6 +46,8 @@ void bf_close(bf_handle handle);
 
 bf_handle bf_open(char * serial_port_name, int baud)
 {
+    if (!serial_port_name) return BF_BAD_HANDLE;
+
 #ifdef _WIN32
     bf_handle handle = CreateFile(serial_port_name,
         GENERIC_READ | GENERIC_WRITE,
